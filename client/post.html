@@ -1,0 +1,64 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Negociações</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+</head>
+
+<body class="container">
+    <form class="form">
+
+        <div class="form-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" class="form-control" required autofocus/>        
+        </div>    
+
+        <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" min="1" step="1" id="quantidade" class="form-control" value="1" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input id="valor" type="number" class="form-control"  min="0.01" step="0.01" value="0.0" required />
+        </div>
+
+        <button class="btn btn-primary" type="submit" onclick="sendPost(event)">Enviar dados para servidor</button>
+    </form>
+
+    <script src="js/app/helpers/DateHelper.js"></script>
+    <script src="js/app/services/HttpService.js"></script>
+    <script>
+        function sendPost(event) {
+            event.preventDefault();
+            console.log("Enviando post");
+
+            const data = DateHelper.textoParaData(document.querySelector('#data').value);
+            const quantidade = document.querySelector('#quantidade').value;
+            const valor = document.querySelector('#valor').value;
+            
+            const json = {
+              data: data, 
+              quantidade: quantidade, 
+              valor: valor
+            };
+
+            let service = new HttpService();
+            service.post('/negociacoes', json)
+              .then(negociacao => {
+                console.log(negociacao);
+                document.querySelector('#data').value = '';
+                document.querySelector('#data').value = 1;
+                document.querySelector('#data').value = 0.0;
+                document.querySelector('#data').focus();
+                alert('Negociação enviada com sucesso!');
+              })
+              .catch(error => {
+                console.log(error);
+                alert('Não foi possível enviar a negociação.');
+              });
+        }
+    </script>
+</body>
+</html>
