@@ -11,7 +11,7 @@
     
     <div id="mensagemView"></div>
 
-    <form class="form" onsubmit="negociacaoController.adiciona(event)">        
+    <form class="form">        
         <div class="form-group">
             <label for="data">Data</label>
             <input type="date" id="data" class="form-control" required autofocus/>        
@@ -31,8 +31,8 @@
     </form>
     
     <div class="text-center">
-        <button onclick="negociacaoController.importaNegociacoes()" class="btn btn-primary text-center" type="button">Importar Negociações</button>
-        <button onclick="negociacaoController.apaga()" class="btn btn-primary text-center" type="button">Apagar</button>
+        <button class="btn btn-primary text-center button-importar" type="button">Importar Negociações</button>
+        <button class="btn btn-primary text-center button-apagar" type="button">Apagar</button>
     </div> 
     
     <br>
@@ -40,60 +40,12 @@
 
     <div id="negociacoesView"></div>
     
-    <!--<script src="js/lib/index.js"></script>-->
-    <script src="js/app/models/Conta.js"></script>
-    <script src="js/app/models/ContaCorrente.js"></script>
-    <script src="js/app/models/ContaPoupanca.js"></script>
-    <script src="js/app/models/Negociacao.js"></script>
-    <script src="js/app/models/ListaNegociacoes.js"></script>
-    <script src="js/app/models/Mensagem.js"></script>
-    <script src="js/app/helpers/DateHelper.js"></script>
-    <script src="js/app/helpers/Bind.js"></script>
-    <script src="js/app/services/ProxyFactory.js"></script>
-    <script src="js/app/services/NegociacaoService.js"></script>
-    <script src="js/app/services/HttpService.js"></script>
-    <script src="js/app/views/View.js"></script>
-    <script src="js/app/views/NegociacoesView.js"></script>
-    <script src="js/app/views/MensagemView.js"></script>
-    <script src="js/app/controllers/NegociacaoController.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
     <script>
-        let negociacaoController = new NegociacaoController();        
+        System.defaultJSExtensions = true;
+        System.import('js/app/boot').catch(function(err){
+            console.error(err);
+        });
     </script>
-    <!--<script>
-        let negociacao = new Proxy(new Negociacao(new Date(), 1, 100), {
-            get(target, prop, receiver) {                               
-                console.log(`${prop} foi acessada`);
-                return Reflect.get(target, prop, receiver);
-            },
-
-            set: function(target, prop, value, receiver) {
-                console.log(`valor antigo: ${target[prop]}, novo valor: ${value}`);
-                return Reflect.set(target, prop, value, receiver);
-            }
-        });
-
-        console.log(negociacao.quantidade);
-        console.log(negociacao.valor);
-
-        negociacao._quantidade = 2;
-        negociacao._valor = 200;
-
-        mecanismo para interceptar métodos com proxy
-        
-        let lista = new Proxy(new ListaNegociacoes(), {
-            get(target, prop, receiver) {
-                if (['adiciona', 'esvazia'].includes(prop) && typeof(target[prop]) === typeof(Function)) {
-                    return function() {
-                        console.log(`interceptando ${prop}`);
-                        Reflect.apply(target[prop], target, arguments);
-                    }
-                }
-                
-                return Reflect.get(target, prop, receiver);
-            }            
-        });
-
-        lista.adiciona(new Negociacao(new Date(), 1, 100));
-    </script>-->
 </body>
 </html>
